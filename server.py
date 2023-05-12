@@ -1,5 +1,6 @@
 import socket
 import threading
+import json
 
 class ThreadedServer(object):
     def __init__(self, host, port):
@@ -23,8 +24,10 @@ class ThreadedServer(object):
                 data = client.recv(size).decode()
 
                 if (data):
+                    data = json.loads(data)
                     
-                        pass    
+                    if (data['action'].startswith('/api/auth'))
+
                 else:
                     raise Exception('Client disconnected')
             except Exception as ex:
