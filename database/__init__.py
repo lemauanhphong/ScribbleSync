@@ -5,6 +5,13 @@ import mariadb
 
 
 class Database:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
     def connect(self):
         try:
             self.conn = mariadb.connect(
@@ -41,3 +48,7 @@ class Database:
         except Exception as e:
             print_exception(e)
             return False
+
+
+db = Database()
+db.connect()
