@@ -3,21 +3,12 @@ import socket
 import threading
 from traceback import print_exception
 
-<<<<<<< HEAD
-from database import Database
-
-db = Database()
-db.connect()
+from database import db
 
 from api import auth_api, file_api, note_api, profile_api, template_api
 from helpers import response_helper
 
 PORT_NUM = 2808
-=======
-from api import authApi, fileApi, noteApi, profileApi, templateApi
-from helpers import responseHelper
->>>>>>> bf46d27b57343a5bfa35c95715604b8245b27378
-
 
 class ThreadedServer:
     def __init__(self, host, port):
@@ -37,7 +28,6 @@ class ThreadedServer:
         size = 1024
 
         try:
-<<<<<<< HEAD
             data = client.recv(size).decode().strip()
             if data:
                 data = json.loads(data)
@@ -47,19 +37,6 @@ class ThreadedServer:
                     response = auth_api.route(data)
                 elif data['action'].startswith('/api/template'):
                     response = template_api.route(data)
-=======
-            data = client.recv(size).decode()
-
-            if data:
-                data = json.loads(data)
-
-                if "action" not in data:
-                    response = (1, responseHelper.response(503))
-                elif data["action"].startswith("/api/auth"):
-                    response = authApi.route(data)
-                elif data["action"].startswith("/api/template"):
-                    response = templateApi.route(data)
->>>>>>> bf46d27b57343a5bfa35c95715604b8245b27378
                 else:
                     response = (1, response_helper.response(503))
                 # add more
@@ -75,9 +52,5 @@ class ThreadedServer:
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
-=======
-    PORT_NUM = 2808
->>>>>>> bf46d27b57343a5bfa35c95715604b8245b27378
     print(f"Server is running on port {PORT_NUM}")
     ThreadedServer("", PORT_NUM).listen()
