@@ -3,15 +3,11 @@ import socket
 import threading
 from traceback import print_exception
 
-from database import Database
-
-db = Database()
-db.connect()
-
 from api import authApi, fileApi, noteApi, profileApi, templateApi
 from helpers import responseHelper
 
-class ThreadedServer(object):
+
+class ThreadedServer:
     def __init__(self, host, port):
         self.host = host
         self.port = port
@@ -31,14 +27,14 @@ class ThreadedServer(object):
         try:
             data = client.recv(size).decode()
 
-            if (data):
+            if data:
                 data = json.loads(data)
-                
-                if ('action' not in data):
-                    response = (1, responseHelper.response(503))    
-                elif (data['action'].startswith('/api/auth')):
+
+                if "action" not in data:
+                    response = (1, responseHelper.response(503))
+                elif data["action"].startswith("/api/auth"):
                     response = authApi.route(data)
-                elif (data['action'].startswith('/api/template')):
+                elif data["action"].startswith("/api/template"):
                     response = templateApi.route(data)
                 else:
                     response = (1, responseHelper.response(503))
@@ -55,6 +51,6 @@ class ThreadedServer(object):
 
 
 if __name__ == "__main__":
-    port_num = 2808
-    print(f"Server is running on port {port_num}")
-    ThreadedServer("", port_num).listen()
+    PORT_NUM = 2808
+    print(f"Server is running on port {PORT_NUM}")
+    ThreadedServer("", PORT_NUM).listen()
