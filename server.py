@@ -1,8 +1,9 @@
 import json
 import socket
 import threading
-from traceback import print_exception
 
+from api import *
+from traceback import print_exception
 from database import Database
 
 db = Database()
@@ -40,6 +41,7 @@ class ThreadedServer(object):
 
                 if (response[0] == 1):
                     client.send(json.dumps(response[1]).encode())
+
                 else:
                     client.send(json.dumps(responseHelper.response(500)).encode())
             else:

@@ -11,4 +11,3 @@ def route(data):
             return (0, responseHelper.response(405))
     except:
         return (0, responseHelper.response(500))
-

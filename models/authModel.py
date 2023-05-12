@@ -1,5 +1,6 @@
 from server import db
 from helpers import responseHelper
+
 import bcrypt
 
 def login(username, password):
@@ -20,6 +21,7 @@ def register(username, password):
     else:
         hashPassword = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
         status = db.update('INSERT INTO users (username, password) VALUES (%s, %s)', (username, hashPassword))
+
         if (status):
             return (1, responseHelper.response(200, -1, {"app_message": "Registration sucessfully"}))
         else:
