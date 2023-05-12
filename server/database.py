@@ -19,18 +19,12 @@ class Database:
             print(f"Error connecting to MariaDB Platform: {e}")
             sys.exit(1)
 
-    def query(self, stmt: str, param: tuple):
+    def query(self, stmt: str, param: tuple, commit=False):
         try:
             self.cursor.execute(stmt, param)
+            if commit:
+                self.conn.commit()
             return self.cursor.fetchall()
         except Exception as e:
             traceback.print_exception(e)
             return []
-
-    def commit(self):
-        try:
-            self.conn.commit()
-            return True
-        except Exception as e:
-            traceback.print_exception(e)
-            return False
