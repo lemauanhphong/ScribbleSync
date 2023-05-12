@@ -3,8 +3,6 @@ import socket
 import threading
 from traceback import print_exception
 
-from database import db
-
 from api import auth_api, file_api, note_api, profile_api, template_api
 from helpers import response_helper
 

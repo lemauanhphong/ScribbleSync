@@ -1,4 +1,4 @@
-from server import db
+from database import db
 
 
 def get_list_of_template_id():
