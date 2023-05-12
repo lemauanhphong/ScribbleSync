@@ -1,6 +1,10 @@
+import json
 import socket
 import threading
-import json
+from traceback import print_exception
+
+from database import Database
+
 
 class ThreadedServer(object):
     def __init__(self, host, port):
@@ -14,8 +18,8 @@ class ThreadedServer(object):
         self.sock.listen()
         while True:
             client, address = self.sock.accept()
-            threading.Thread(target = self.listenToClient, args = (client, address)).start()
-    
+            threading.Thread(target=self.listenToClient, args=(client, address)).start()
+
     def listenToClient(self, client, address):
         size = 1024
 
@@ -23,22 +27,27 @@ class ThreadedServer(object):
             try:
                 data = client.recv(size).decode()
 
-                if (data):
+                if data:
                     data = json.loads(data)
-                    
-                    if (data['action'].startswith('/api/auth'))
+
+                    # if (data['action'].startswith('/api/auth'))
 
                 else:
-                    raise Exception('Client disconnected')
-            except Exception as ex:
+                    raise Exception("Client disconnected")
+            except Exception as e:
+                print_exception(e)
                 client.close()
                 return False
 
+
 if __name__ == "__main__":
+    db = Database()
+    db.connect()
+
     port_num = int(input("[*] Enter port number: "))
-    if (port_num < 1 or port_num > 65535):
+    if port_num < 1 or port_num > 65535:
         print("0 < port < 65536")
         exit(0)
 
     print(f"Server is running on port {port_num}")
-    ThreadedServer('', port_num).listen()
+    ThreadedServer("", port_num).listen()
