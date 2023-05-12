@@ -1,4 +1,4 @@
-from database import db
+from server import db
 from helpers import *
 import bcrypt
 
@@ -19,7 +19,7 @@ def register(username, password):
         return (0, responseHelper.response(409, -1, {"app_message": "Username is already taken"}))
     else:
         hashPassword = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-        status = db.query('INSERT INTO users (username, password) VALUES (%s, %s)', (username, hashPassword), 1)
+        status = db.query('INSERT INTO users (username, password) VALUES (%s, %s)', (username, hashPassword), true)
         if (status):
             return (1, responseHelper.response(200, -1, {"app_message": "Registration sucessfully"}))
         else:

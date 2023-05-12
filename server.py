@@ -2,7 +2,7 @@ import socket
 import threading
 import json
 from api import *
-
+from database.database import Database
 
 class ThreadedServer(object):
     def __init__(self, host, port):
@@ -30,7 +30,7 @@ class ThreadedServer(object):
                         data = json.loads(data)
                         
                         if (data['action'].startswith('/api/auth')):
-                            apiAuth.route(data, client)
+                            apiAuth.route(data)
 
                     except Exception as ex:
                         pass
@@ -47,5 +47,6 @@ if __name__ == "__main__":
         print("0 < port < 65536")
         exit(0)
 
+    db = Database()
     print(f"Server is running on port {port_num}")
     ThreadedServer('', port_num).listen()
