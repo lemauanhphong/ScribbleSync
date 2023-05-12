@@ -1,8 +1,9 @@
 import json
 import socket
 import threading
-from traceback import print_exception
 
+from api import *
+from traceback import print_exception
 from database import Database
 
 
@@ -28,10 +29,14 @@ class ThreadedServer(object):
                 data = client.recv(size).decode()
 
                 if data:
-                    data = json.loads(data)
+                    try:
+                        data = json.loads(data)
+                        
+                        if (data['action'].startswith('/api/auth')):
+                            apiAuth.route(data, client)
 
-                    # if (data['action'].startswith('/api/auth'))
-
+                    except Exception as ex:
+                        pass
                 else:
                     raise Exception("Client disconnected")
             except Exception as e:
