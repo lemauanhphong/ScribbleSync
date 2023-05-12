@@ -34,7 +34,6 @@ class ThreadedServer(object):
                     socket_connection.connect(server)
                     socket_connection.send(data)
                     recv_data = socket_connection.recv(size)
-                    socket_connection.close()
                 client.send(recv_data)
             else:
                 raise Exception("Client disconnected")
