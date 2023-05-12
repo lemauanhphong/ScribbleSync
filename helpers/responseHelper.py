@@ -3,7 +3,8 @@ import json
 statusMessage = {
     200: "OK",
     400: "Bad Request",
-    409: "Conflit",
+    404: "Not Found",
+    409: "Conflict",
     500: "Internal Server Error",
     503: "Method Not Allowed"
 }
