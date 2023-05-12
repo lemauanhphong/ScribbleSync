@@ -1,1 +1,1 @@
-from models.fileModel import *
+from models import fileModel

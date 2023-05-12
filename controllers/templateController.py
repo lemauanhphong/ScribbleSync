@@ -1,1 +1,1 @@
-from models.templateModel import *
+from models import templateModel

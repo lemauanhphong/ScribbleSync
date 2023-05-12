@@ -1,1 +1,1 @@
-from models.nodeModel import *
+from models import noteModel

@@ -1,5 +1,6 @@
-from models.authModel import *
-from helpers import *
+from models import authModel
+from helpers import responseHelper, jwtHelper
+
 import re
 import time
 
@@ -15,15 +16,15 @@ def register(data):
     
     res = authModel.register(data['username'], data['password'])
 
-    return res[1]
+    return res
         
 def login(data):
     if ('username' not in data or 'password' not in data):
         return responseHelper.response(400)
     
-    res = authModel.login(username, password)
+    res = authModel.login(data['username'], data['password'])
     if (res[0] == 0):
-        return res[1]
+        return res
     else:
         accesstoken = jwtHelper.sign({'username': res[1], 'exp': int(time.time() + 24 * 60 * 60)})
-        return responseHelper.response(200, -1, {'app_message': 'Login successfully', 'accesstoken': accesstoken})
+        return (1, responseHelper.response(200, -1, {'app_message': 'Login successfully', 'accesstoken': accesstoken}))
