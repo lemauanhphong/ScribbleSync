@@ -1,1 +1,1 @@
-from controllers.noteController import *
+from controllers import noteController

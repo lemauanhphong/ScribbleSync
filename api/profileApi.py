@@ -1,1 +1,1 @@
-from controllers.profileController import *
+from controllers import profileController

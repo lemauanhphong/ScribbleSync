@@ -34,17 +34,21 @@ class ThreadedServer(object):
             if (data):
                 data = json.loads(data)
                 
-                if (data['action'].startswith('/api/auth')):
+                if ('action' not in data):
+                    response = (1, responseHelper.response(503))    
+                elif (data['action'].startswith('/api/auth')):
                     response = authApi.route(data)
+                elif (data['action'].startswith('/api/template')):
+                    response = templateApi.route(data)
+                else:
+                    response = (1, responseHelper.response(503))
                 # add more
 
-                if (response[0] == 1):
-                    client.send(json.dumps(response[1]).encode())
-                else:
-                    client.send(json.dumps(responseHelper.response(500)).encode())
+                client.send(json.dumps(response[1]).encode())
             else:
                 raise Exception("Client disconnected")
         except Exception as e:
+            client.send(json.dumps(responseHelper.response(500)).encode())
             print_exception(e)
         finally:
             client.close()

@@ -1,1 +1,1 @@
-from controllers.fileController import *
+from controllers import fileController

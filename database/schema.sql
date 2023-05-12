@@ -38,7 +38,7 @@ CREATE TABLE
     FOREIGN KEY (uid) REFERENCES users (id)
   );
 
-DROP TABLE IF EXISTS temples;
+DROP TABLE IF EXISTS templates;
 
 CREATE TABLE
   templates (
