@@ -5,6 +5,11 @@ from traceback import print_exception
 
 from database import Database
 
+db = Database()
+db.connect()
+
+from api import authApi, fileApi, noteApi, profileApi, templateApi
+from helpers import responseHelper
 
 class ThreadedServer(object):
     def __init__(self, host, port):
@@ -23,37 +28,29 @@ class ThreadedServer(object):
     def listenToClient(self, client, address):
         size = 1024
 
-        while True:
-            try:
-                data = client.recv(size).decode()
+        try:
+            data = client.recv(size).decode()
 
-                if (data):
-                    try:
-                        data = json.loads(data)
-                        
-                        if (data['action'].startswith('/api/auth')):
-                            apiAuth.route(data)
+            if (data):
+                data = json.loads(data)
+                
+                if (data['action'].startswith('/api/auth')):
+                    response = authApi.route(data)
+                # add more
 
-                    except Exception as ex:
-                        pass
-
+                if (response[0] == 1):
+                    client.send(json.dumps(response[1]).encode())
                 else:
-                    raise Exception("Client disconnected")
-            except Exception as e:
-                print_exception(e)
-                client.close()
-                return False
+                    client.send(json.dumps(responseHelper.response(500)).encode())
+            else:
+                raise Exception("Client disconnected")
+        except Exception as e:
+            print_exception(e)
+        finally:
+            client.close()
 
 
 if __name__ == "__main__":
-    db = Database()
-    db.connect()
-
-    port_num = int(input("[*] Enter port number: "))
-    if port_num < 1 or port_num > 65535:
-        print("0 < port < 65536")
-        exit(0)
-
-    db = Database()
+    port_num = 2808
     print(f"Server is running on port {port_num}")
     ThreadedServer("", port_num).listen()

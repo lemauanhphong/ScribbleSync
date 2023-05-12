@@ -12,6 +12,6 @@ def response(statuscode, message=-1, more={}):
     returnMessage = message
     if (message == - 1):
         returnMessage = statusMessage[statuscode]
-    returnDict = {'statuscode': statuscode, 'message': message}
+    returnDict = {'statuscode': statuscode, 'message': returnMessage}
     returnDict.update(more)
     return returnDict
