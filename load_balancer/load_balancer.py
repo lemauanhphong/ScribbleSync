@@ -1,4 +1,3 @@
-import json
 import socket
 import threading
 from itertools import cycle
@@ -20,10 +19,10 @@ class ThreadedServer(object):
     def listen(self):
         self.sock.listen()
         while True:
-            client, address = self.sock.accept()
-            threading.Thread(target=self.listenToClient, args=(client, address)).start()
+            client = self.sock.accept()[0]
+            threading.Thread(target=self.listen_to_client, args=(client,)).start()
 
-    def listenToClient(self, client, address):
+    def listen_to_client(self, client):
         size = 1024
 
         try:
@@ -34,6 +33,7 @@ class ThreadedServer(object):
                     socket_connection.connect(server)
                     socket_connection.send(data)
                     recv_data = socket_connection.recv(size)
+
                 client.send(recv_data)
             else:
                 raise Exception("Client disconnected")
@@ -42,7 +42,6 @@ class ThreadedServer(object):
         finally:
             client.close()
 
-
-if __name__ == "__main__":    
+if __name__ == "__main__":
     print(f"Server is running on port {PORT_NUM}")
     ThreadedServer("", PORT_NUM).listen()
