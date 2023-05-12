@@ -1,6 +1,8 @@
 import socket
 import threading
 import json
+from api import *
+
 
 class ThreadedServer(object):
     def __init__(self, host, port):
@@ -24,9 +26,14 @@ class ThreadedServer(object):
                 data = client.recv(size).decode()
 
                 if (data):
-                    data = json.loads(data)
-                    
-                    if (data['action'].startswith('/api/auth'))
+                    try:
+                        data = json.loads(data)
+                        
+                        if (data['action'].startswith('/api/auth')):
+                            apiAuth.route(data, client)
+
+                    except Exception as ex:
+                        pass
 
                 else:
                     raise Exception('Client disconnected')
