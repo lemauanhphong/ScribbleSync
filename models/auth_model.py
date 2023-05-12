@@ -1,5 +1,5 @@
 import bcrypt
-from server import db
+from database import db
 
 
 def login(username, password):
