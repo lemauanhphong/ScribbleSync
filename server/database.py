@@ -19,47 +19,16 @@ class Database:
             print(f"Error connecting to MariaDB Platform: {e}")
             sys.exit(1)
 
-    def register(self, user, passwd):
+    def query(self, stmt: str, param: tuple):
         try:
-            stmt = 'INSERT INTO users (username, password, avatar) VALUES (%s, %s, "default.jpg")'
-            self.cursor.execute(stmt, (user, passwd))
-            self.conn.commit()
-            return True
-        except Exception as e:
-            traceback.print_exception(e)
-            return False
-
-    def login(self, user, passwd):
-        try:
-            stmt = "SELECT * FROM users WHERE username = %s and password = %s"
-            self.cursor.execute(stmt, (user, passwd))
-            return self.cursor.fetchall() != []
-        except Exception as e:
-            traceback.print_exception(e)
-            return False
-
-    def get_user(self, user):
-        try:
-            stmt = "SELECT * FROM users WHERE username = %s"
-            self.cursor.execute(stmt, (user,))
+            self.cursor.execute(stmt, param)
             return self.cursor.fetchall()
         except Exception as e:
             traceback.print_exception(e)
-            return None
+            return []
 
-    def check_user(self, user):
+    def commit(self):
         try:
-            stmt = "SELECT username FROM users WHERE username = %s"
-            self.cursor.execute(stmt, (user,))
-            return self.cursor.fetchall() != []
-        except Exception as e:
-            traceback.print_exception(e)
-            return False
-
-    def update_avatar(self, user, avatar):
-        try:
-            stmt = "UPDATE users SET avatar = %s WHERE username = %s"
-            self.cursor.execute(stmt, (avatar, user))
             self.conn.commit()
             return True
         except Exception as e:
