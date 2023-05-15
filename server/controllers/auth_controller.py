@@ -31,6 +31,6 @@ def login(data):
                 401, -1, {'app_message': 'Invalid username or password'}))
     else:
         accesstoken = jwt_helper.sign(
-            {'username': res[1], 'exp': int(time.time() + 24 * 60 * 60)})
+            {'id': res[1][0], 'username': res[1][1], 'exp': int(time.time() + 24 * 60 * 60)})
         return (1, response_helper.response(
             200, -1, {'app_message': 'Login successfully', 'accesstoken': accesstoken}))
