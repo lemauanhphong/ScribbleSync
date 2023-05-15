@@ -5,8 +5,42 @@ from traceback import print_exception
 
 from api import auth_api, file_api, note_api, profile_api, template_api
 from helpers import response_helper
+from middlewares import jwt_middleware
 
 PORT_NUM = 2808
+
+api_routes = {
+    "/api/auth": auth_api,
+    "/api/template": template_api,
+    "/api/note": note_api,
+    "/api/profile": profile_api,
+    "/api/file": file_api,
+}
+
+
+def parse_route(data):
+    api = None
+    action = data.get("action", "")
+
+    for path, value in api_routes.items():
+        if action.startswith(path):
+            api = value
+            break
+
+    if api is None:
+        return (1, response_helper.response(503))
+
+    token = data.get("token", "")
+
+    if api is auth_api:
+        return api.route(data)
+
+    token = jwt_middleware.jwt_validator(token)
+    if not token:
+        return (1, response_helper.response(401))
+
+    data["token"] = token
+    return api.route(data)
 
 
 class ThreadedServer:
@@ -28,29 +62,11 @@ class ThreadedServer:
 
         try:
             data = client.recv(size).decode().strip()
-            if data:
-                data = json.loads(data)
-                if "action" not in data:
-                    response = (1, response_helper.response(503))
-                elif data["action"].startswith("/api/auth"):
-                    response = auth_api.route(data)
-
-                # TODO: JWT middleware
-
-                elif data["action"].startswith("/api/template"):
-                    response = template_api.route(data)
-                elif data["action"].startswith("/api/note"):
-                    response = note_api.route(data)
-                elif data["action"].startswith("/api/profile"):
-                    response = profile_api.route(data)
-                elif data["action"].startswith("/api/file"):
-                    response = file_api.route(data)
-                else:
-                    response = (1, response_helper.response(503))
-
-                client.send(json.dumps(response[1]).encode())
-            else:
+            if not data:
                 raise Exception("Client disconnected")
+
+            response = parse_route(json.loads(data))
+            client.send(json.dumps(response[1]).encode())
         except Exception as e:
             client.send(json.dumps(response_helper.response(500)).encode())
             print_exception(e)

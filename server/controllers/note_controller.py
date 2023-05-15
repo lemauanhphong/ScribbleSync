@@ -1,17 +1,15 @@
-from helpers import jwt_helper, response_helper
+from helpers import response_helper
 from models import note_model
 
 
 def new_note(data, token):
-    uid = jwt_helper.verify(token["accesstoken"])["uid"]
-    if note_model.new_note(uid, data["name"], data["content"]):
+    if note_model.new_note(token["id"], data["name"], data["content"]):
         return (1, response_helper.response(200))
     return (0, response_helper.response(500))
 
 
 def get_list_of_note_id(token):
-    uid = jwt_helper.verify(token["accesstoken"])["uid"]
-    list_of_id = note_model.get_list_of_note_id(uid)
+    list_of_id = note_model.get_list_of_note_id(token["id"])
     return (1, response_helper.response(200, -1, {"id", list_of_id}))
 
 
