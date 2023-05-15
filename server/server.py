@@ -8,6 +8,7 @@ from helpers import response_helper
 
 PORT_NUM = 2808
 
+
 class ThreadedServer:
     def __init__(self, host, port):
         self.host = host
@@ -29,15 +30,23 @@ class ThreadedServer:
             data = client.recv(size).decode().strip()
             if data:
                 data = json.loads(data)
-                if 'action' not in data:
+                if "action" not in data:
                     response = (1, response_helper.response(503))
-                elif data['action'].startswith('/api/auth'):
+                elif data["action"].startswith("/api/auth"):
                     response = auth_api.route(data)
-                elif data['action'].startswith('/api/template'):
+
+                # TODO: JWT middleware
+
+                elif data["action"].startswith("/api/template"):
                     response = template_api.route(data)
+                elif data["action"].startswith("/api/note"):
+                    response = note_api.route(data)
+                elif data["action"].startswith("/api/profile"):
+                    response = profile_api.route(data)
+                elif data["action"].startswith("/api/file"):
+                    response = file_api.route(data)
                 else:
                     response = (1, response_helper.response(503))
-                # add more
 
                 client.send(json.dumps(response[1]).encode())
             else:
