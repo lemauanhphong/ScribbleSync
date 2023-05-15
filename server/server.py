@@ -4,7 +4,7 @@ import threading
 from traceback import print_exception
 
 from api import auth_api, file_api, note_api, profile_api, template_api
-from helpers import response_helper
+from helpers.response_helper import response
 from middlewares import jwt_middleware
 
 PORT_NUM = 2808
@@ -28,7 +28,7 @@ def parse_route(data):
             break
 
     if api is None:
-        return (1, response_helper.response(503))
+        return (1, response(503))
 
     token = data.get("token", "")
 
@@ -37,7 +37,7 @@ def parse_route(data):
 
     token = jwt_middleware.jwt_validator(token)
     if not token:
-        return (1, response_helper.response(401))
+        return (1, response(401))
 
     data["token"] = token
     return api.route(data)
@@ -65,10 +65,10 @@ class ThreadedServer:
             if not data:
                 raise Exception("Client disconnected")
 
-            response = parse_route(json.loads(data))
-            client.send(json.dumps(response[1]).encode())
+            r = parse_route(json.loads(data))
+            client.send(json.dumps(r[1]).encode())
         except Exception as e:
-            client.send(json.dumps(response_helper.response(500)).encode())
+            client.send(json.dumps(response(500)).encode())
             print_exception(e)
         finally:
             client.close()
