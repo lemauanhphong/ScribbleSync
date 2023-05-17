@@ -46,6 +46,7 @@ class Database:
             self.conn.commit()
             return True
         except Exception as e:
+            self.conn.rollback()
             print_exception(e)
             return False
 
