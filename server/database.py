@@ -17,7 +17,7 @@ class Database:
             self.conn = mariadb.connect(
                 user="root",
                 password="123456",
-                host="172.21.0.2",
+                host="127.0.0.1",
                 port=3306,
                 database="scribble_sync",
             )
