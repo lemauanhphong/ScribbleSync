@@ -3,14 +3,16 @@ from models import note_model
 
 
 def new(data, token):
-    if note_model.new(token["id"], data["name"], data["content"]):
-        return (1, response(200))
-    return (0, response(500))
+    if not note_model.new(token["id"], data["name"], data["content"]):
+        return (0, response(500))
+
+    note_id = note_model.get_last_insert_id()
+    return (1, response(200, -1, {"id": note_id}))
 
 
 def get_list(token):
     list_id = note_model.get_list(token["id"])
-    return (1, response(200, -1, {"id", list_id}))
+    return (1, response(200, -1, {"id": list_id}))
 
 
 def get(action):

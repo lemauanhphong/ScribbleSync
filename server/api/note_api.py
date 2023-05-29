@@ -4,10 +4,10 @@ from controllers import note_controller
 from helpers.response_helper import response
 
 
-def route(data):
-    action = data["action"]
-    data = data["data"]
-    token = data["token"]
+def route(body):
+    action = body["action"]
+    token = body["token"]
+    data = body["data"]
 
     if action == "/api/note/new":
         return note_controller.new(data, token)

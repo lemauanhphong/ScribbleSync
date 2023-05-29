@@ -20,8 +20,9 @@ CREATE TABLE
   notes (
     id INT NOT NULL AUTO_INCREMENT,
     uid INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
     content LONGTEXT,
-    share BOOL NOT NULL,
+    share TEXT,
     PRIMARY KEY (id),
     FOREIGN KEY (uid) REFERENCES users (id)
   );
