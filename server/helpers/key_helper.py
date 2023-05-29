@@ -1,6 +1,6 @@
 def key_validator(data, key_dict):
     for key in key_dict:
-        if isinstance(key, str):
+        if not isinstance(key, str):
             return False
         components = key.split('/')
         tmp = data
@@ -9,7 +9,7 @@ def key_validator(data, key_dict):
                 tmp = tmp[component]
         except KeyError:
             return False
-        if isinstance(tmp, key_dict[key]):
+        if not isinstance(tmp, key_dict[key]):
             return False
     return True
     
