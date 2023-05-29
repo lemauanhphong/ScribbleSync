@@ -7,14 +7,10 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - datadir:/var/lib/mysql
       - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
     networks:
       static-network:
         ipv4_address: 172.21.0.2
-
-volumes:
-  datadir:
 
 networks:
   static-network:
