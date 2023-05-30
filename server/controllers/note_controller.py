@@ -19,7 +19,7 @@ def get(action):
     note_id = action.split("/")[-1]
     note = note_model.get(note_id)
     if note:
-        return (1, response(200, -1, {"content": note[0]}))
+        return (1, response(200, -1, {"name": note[0][0], "content": note[0][1]}))
     return (0, response(404))
 
 
