@@ -2,15 +2,21 @@ from database import db
 
 
 def get_list(uid):
-    return db.query("SELECT id FROM notes WHERE uid = %s", (uid,))
+    list_id = db.query("SELECT id FROM notes WHERE uid = %s", (uid, ))
+    return [x[0] for x in list_id]
 
 
 def get(note_id):
-    return db.query("SELECT name, content FROM notes WHERE id = %s", (note_id,))
+    return db.query("SELECT name, content FROM notes WHERE id = %s",
+                    (note_id, ))
+
+
+def get_last_insert_id():
+    return db.query("SELECT LAST_INSERT_ID()")[0][0]
 
 
 def get_share(note_id):
-    return db.query("SELECT share FROM notes WHERE id = %s", (note_id,))
+    return db.query("SELECT share FROM notes WHERE id = %s", (note_id, ))
 
 
 def new(uid, name, content):
@@ -31,4 +37,4 @@ def update(note_id, name, content, share):
 
 
 def delete(note_id):
-    return db.query("DELETE * FROM notes WHERE id = %s", (note_id,))
+    return db.query("DELETE * FROM notes WHERE id = %s", (note_id, ))
