@@ -6,8 +6,8 @@ def new(data, token):
     if not note_model.new(token["id"], data["name"], data["content"]):
         return (0, response(500))
 
-    note_id = note_model.get_last_insert_id()
-    return (1, response(200, -1, {"id": note_id}))
+    id_list = note_model.get_last_insert_id()
+    return (1, response(200, -1, {"id_list": id_list}))
 
 
 def get_list(token):
