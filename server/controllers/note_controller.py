@@ -6,20 +6,20 @@ def new(data, token):
     if not note_model.new(token["id"], data["name"], data["content"]):
         return (0, response(500))
 
-    id_list = note_model.get_last_insert_id()
-    return (1, response(200, -1, {"id_list": id_list}))
+    note_id = note_model.get_last_insert_id()
+    return (1, response(200, -1, {"id": note_id}))
 
 
 def get_list(token):
-    list_id = note_model.get_list(token["id"])
-    return (1, response(200, -1, {"id": list_id}))
+    id_list = note_model.get_list(token["id"])
+    return (1, response(200, -1, {"id_list": id_list}))
 
 
 def get(action):
     note_id = action.split("/")[-1]
     note = note_model.get(note_id)
     if note:
-        return (1, response(200, -1, {"content": note[0]}))
+        return (1, response(200, -1, {"name": note[0][0], "content": note[0][1]}))
     return (0, response(404))
 
 

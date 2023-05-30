@@ -4,10 +4,10 @@ from controllers import file_controller
 from helpers.response_helper import response
 
 
-def route(data):
-    action = data["action"]
-    data = data["data"]
-    token = data["token"]
+def route(body):
+    action = body["action"]
+    data = body["data"]
+    token = body["token"]
 
     if action == "/api/file":
         return file_controller.get_list(token)
