@@ -55,13 +55,21 @@ class ThreadedServer:
         self.sock.listen()
         while True:
             client = self.sock.accept()[0]
+            client.settimeout(5)
             threading.Thread(target=self.listen_to_client, args=(client,)).start()
 
     def listen_to_client(self, client):
         size = 1024
 
         try:
-            data = client.recv(size).decode().strip()
+            data = b""
+            while True:
+                recv_data = client.recv(size)
+                data += recv_data
+                if data[-1] == 10:
+                    break
+            
+            data = data.decode().strip()
             if not data:
                 raise Exception("Client disconnected")
 

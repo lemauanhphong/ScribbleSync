@@ -26,7 +26,13 @@ class ThreadedServer(object):
         size = 1024
 
         try:
-            data = client.recv(size)
+            data = b""
+            while True:
+                recv_data = client.recv(size)
+                data += recv_data
+                if data[-1] == 10:
+                    break
+            
             if data:
                 server = next(ITER)
                 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket_connection:
