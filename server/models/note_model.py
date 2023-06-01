@@ -37,4 +37,4 @@ def update(note_id, name, content, share):
 
 
 def delete(note_id):
-    return db.query("DELETE * FROM notes WHERE id = %s", (note_id, ))
+    return db.query("DELETE FROM notes WHERE id = %s", (note_id, ))
