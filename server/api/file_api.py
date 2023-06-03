@@ -15,7 +15,7 @@ def route(body):
         return file_controller.upload(data, token)
     if re.match(r"^/api/file/\d+$", action):
         return file_controller.get(action)
-    if re.match(r"^/api/file/delete\d+$", action):
+    if re.match(r"^/api/file/delete/\d+$", action):
         return file_controller.detele(action)
 
     return (0, response(503))

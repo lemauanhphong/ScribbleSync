@@ -42,7 +42,7 @@ def edit(action, data):
 
 
 def delete(action):
-    note_id = int(action.split("/"))
+    note_id = int(action.split("/")[-1])
     if note_model.delete(note_id):
         return (1, response(200))
     return (0, response(500))
