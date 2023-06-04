@@ -56,7 +56,8 @@ class ThreadedServer:
         while True:
             client = self.sock.accept()[0]
             client.settimeout(5)
-            threading.Thread(target=self.listen_to_client, args=(client,)).start()
+            threading.Thread(target=self.listen_to_client,
+                             args=(client,)).start()
 
     def listen_to_client(self, client):
         size = 1024
@@ -68,13 +69,13 @@ class ThreadedServer:
                 data += recv_data
                 if data[-1] == 10:
                     break
-            
+
             data = data.decode().strip()
             if not data:
                 raise Exception("Client disconnected")
 
             r = parse_route(json.loads(data))
-            client.send(json.dumps(r[1]).encode())
+            client.send(json.dumps(r[1]).encode() + b'\n')
         except Exception as e:
             client.send(json.dumps(response(500)).encode())
             print_exception(e)
