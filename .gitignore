@@ -3,3 +3,4 @@ jwtRS512.key.pub
 __pycache__
 pyproject.toml
 .vscode
+*.pem
