@@ -1,4 +1,3 @@
 #!/bin/bash
-echo -e "# Don't add passphrase"
-ssh-keygen -t rsa -b 4096 -m PEM -E SHA512 -f jwtRS512.key -N ""
-openssl rsa -in jwtRS512.key -pubout -outform PEM -out jwtRS512.key.pub
+openssl genpkey -algorithm Ed25519 -out ed25519key.pem
+openssl pkey -in ed25519key.pem -pubout -out ed25519pubkey.pem
