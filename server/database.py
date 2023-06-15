@@ -1,5 +1,5 @@
 import sys
-from traceback import print_exception
+from traceback import print_exc
 
 import mariadb
 
@@ -22,8 +22,8 @@ class Database:
                 database="scribble_sync",
             )
             self.cursor = self.conn.cursor()
-        except mariadb.Error as e:
-            print(f"Error connecting to MariaDB Platform: {e}")
+        except mariadb.Error:
+            print_exc()
             sys.exit(1)
 
     def query(self, stmt, param=None):
@@ -33,8 +33,8 @@ class Database:
             else:
                 self.cursor.execute(stmt)
             return self.cursor.fetchall()
-        except Exception as e:
-            print_exception(e)
+        except Exception:
+            print_exc()
             return []
 
     def update(self, stmt, param=None):
@@ -45,9 +45,9 @@ class Database:
                 self.cursor.execute(stmt)
             self.conn.commit()
             return True
-        except Exception as e:
+        except Exception:
             self.conn.rollback()
-            print_exception(e)
+            print_exc()
             return False
 
 

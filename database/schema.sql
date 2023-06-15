@@ -4,6 +4,12 @@ USE scribble_sync;
 
 DROP TABLE IF EXISTS users;
 
+DROP TABLE IF EXISTS notes;
+
+DROP TABLE IF EXISTS templates;
+
+DROP TABLE IF EXISTS shares;
+
 CREATE TABLE
   users (
     id INT NOT NULL AUTO_INCREMENT,
@@ -14,32 +20,16 @@ CREATE TABLE
     PRIMARY KEY (id)
   );
 
-DROP TABLE IF EXISTS notes;
-
 CREATE TABLE
   notes (
     id INT NOT NULL AUTO_INCREMENT,
     uid INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     content LONGTEXT,
-    share TEXT,
+    share_token VARCHAR(255),
     PRIMARY KEY (id),
     FOREIGN KEY (uid) REFERENCES users (id)
   );
-
-DROP TABLE IF EXISTS files;
-
-CREATE TABLE
-  files (
-    id INT NOT NULL AUTO_INCREMENT,
-    uid INT NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    content LONGTEXT,
-    PRIMARY KEY (id),
-    FOREIGN KEY (uid) REFERENCES users (id)
-  );
-
-DROP TABLE IF EXISTS templates;
 
 CREATE TABLE
   templates (
@@ -47,4 +37,13 @@ CREATE TABLE
     name VARCHAR(255),
     content LONGTEXT,
     PRIMARY KEY (id)
+  );
+
+CREATE TABLE
+  shares (
+    id INT NOT NULL,
+    uid INT NOT NULL,
+    PRIMARY KEY (id, uid),
+    FOREIGN KEY (id) REFERENCES notes (id),
+    FOREIGN KEY (uid) REFERENCES users (id)
   );

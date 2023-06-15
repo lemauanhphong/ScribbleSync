@@ -19,6 +19,4 @@ def update_profile(uid, new_password, new_avatar):
         stmt.append("avatar = %s")
         param += (new_avatar,)
 
-    return not stmt or db.update(
-        f'UPDATE users SET {",".join(stmt)} WHERE id = %d', param + (uid,)
-    )
+    return not stmt or db.update(f'UPDATE users SET {",".join(stmt)} WHERE id = %d', param + (uid,))
