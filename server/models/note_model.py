@@ -2,7 +2,7 @@ from database import db
 
 
 def get_uid(username):
-    return db.query("SELECT id FROM users WHERE username=?", (username,))[0][0]
+    return db.query("SELECT id FROM users WHERE username=?", (username,))
 
 
 def get_last_insert_id():
@@ -62,12 +62,10 @@ def set_share_token(note_id, share_token, uid):
 
 
 def add_shares(note_id, uid):
-    print('add', note_id, uid)
     return db.update("INSERT INTO shares(id, uid) VALUES (?, ?)", (note_id, uid))
 
 
 def remove_shares(note_id, uid):
-    print('remove', note_id, uid)
     return db.update("DELETE FROM shares WHERE id=? AND uid=?", (note_id, uid))
 
 
