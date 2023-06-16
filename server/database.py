@@ -21,7 +21,7 @@ class Database:
                 port=3306,
                 database="scribble_sync",
             )
-            self.cursor = self.conn.cursor()
+            self.cursor = self.conn.cursor(dictionary=True)
         except mariadb.Error:
             print_exc()
             sys.exit(1)

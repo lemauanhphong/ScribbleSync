@@ -26,6 +26,8 @@ pew("/api/auth/register", acc)
 
 token = pew("/api/auth/login", acc)["token"]
 
+pew('/api/template')
+
 note_id = pew("/api/note/new", {"name": "hehe", "content": "lmao"})["id"]
 pew("/api/note")
 pew(f"/api/note/{note_id}")
@@ -47,5 +49,5 @@ pew(f"/api/note/edit/{note_id}", {"share_remove": "meomeo13"})
 
 
 pew("/api/profile")
-pew("/api/profile/update", {"new_password": "abcdef", "new_avatar": "lmaobro"})
+pew("/api/profile/update", {"new_avatar": "bro"})
 pew("/api/profile")
