@@ -3,7 +3,13 @@ from models import profile_model
 
 
 def get_profile(body):
-    avatar = profile_model.get_profile(body["token"]["id"])
+    profile = profile_model.get_profile(body["token"]["id"])
+    return (1, response(200, -1, {"avatar": profile[0]["avatar"] if profile else None}))
+
+
+def get_avatar(body):
+    username = body["action"].split("/")[-1]
+    avatar = profile_model.get_avatar(username)
     return (1, response(200, -1, {"avatar": avatar[0]["avatar"] if avatar else None}))
 
 

@@ -7,6 +7,10 @@ def get_profile(uid):
     return db.query("SELECT avatar FROM users WHERE id=?", (uid,))
 
 
+def get_avatar(username):
+    return db.query("SELECT avatar FROM users WHERE username=?", (username,))
+
+
 def update_profile(uid, new_password, new_avatar):
     placeholders = []
     params = ()

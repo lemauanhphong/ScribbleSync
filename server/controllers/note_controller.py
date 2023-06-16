@@ -60,14 +60,14 @@ def update_note(body):
             if not note_model.add_shares(note_id, uid[0]["id"]):
                 return (0, response(500))
         else:
-            return (0, response("User not found", 404))
+            return (0, response(404, "User not found"))
 
     if username := body["data"].get("share_remove"):
         if uid := note_model.get_uid(username):
             if not note_model.remove_shares(note_id, uid[0]["id"]):
                 return (0, response(500))
         else:
-            return (0, response("User not found", 404))
+            return (0, response(404, "User not found"))
 
     return (1, response(200))
 

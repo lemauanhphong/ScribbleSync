@@ -29,11 +29,10 @@ def parse_route(data):
     if api is None:
         return (1, response(503))
 
-    token = data.get("token", "")
-
-    if api is auth_api:
+    if api is auth_api or action.startswith("/api/profile/avatar"):
         return api.route(data)
 
+    token = data.get("token", "")
     token = jwt_middleware.jwt_validator(token)
     if not token:
         return (1, response(401))
@@ -55,8 +54,7 @@ class ThreadedServer:
         while True:
             client = self.sock.accept()[0]
             client.settimeout(5)
-            threading.Thread(target=self.listen_to_client,
-                             args=(client,)).start()
+            threading.Thread(target=self.listen_to_client, args=(client,)).start()
 
     def listen_to_client(self, client):
         size = 1024
@@ -74,7 +72,7 @@ class ThreadedServer:
                 raise Exception("Client disconnected")
 
             r = parse_route(json.loads(data))
-            client.send(json.dumps(r[1]).encode() + b'\n')
+            client.send(json.dumps(r[1]).encode() + b"\n")
         except Exception as e:
             client.send(json.dumps(response(500)).encode())
             print_exception(e)
