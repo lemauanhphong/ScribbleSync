@@ -69,11 +69,11 @@ def get_share_list(note_id):
     return [x["username"] for x in result]
 
 
-def add_shares(note_id, uid):
+def share_add(note_id, uid):
     return db.update("INSERT INTO shares(id, uid) VALUES (?, ?)", (note_id, uid))
 
 
-def remove_shares(note_id, uid):
+def share_remove(note_id, uid):
     return db.update("DELETE FROM shares WHERE id=? AND uid=?", (note_id, uid))
 
 

@@ -54,19 +54,17 @@ def update_note(body):
     if isinstance((share_token := body["data"].get("share_token")), bool):
         note_model.set_share_token(note_id, str(uuid.uuid4()) if share_token else None, uid)
 
-    if username := body["data"].get("share_add"):
-        if uid := note_model.get_uid(username):
-            if not note_model.add_shares(note_id, uid[0]["id"]):
-                return (0, response(500))
-        else:
-            return (0, response(404, "User not found"))
+    for field in ["share_add", "share_remove"]:
+        if username := body["data"].get(field):
+            if share_uid := note_model.get_uid(username):
+                if share_uid[0]["id"] == uid:
+                    return (0, response(403))
 
-    if username := body["data"].get("share_remove"):
-        if uid := note_model.get_uid(username):
-            if not note_model.remove_shares(note_id, uid[0]["id"]):
-                return (0, response(500))
-        else:
-            return (0, response(404, "User not found"))
+                func = getattr(note_model, field)
+                if not func(note_id, share_uid[0]["id"]):
+                    return (0, response(500))
+            else:
+                return (0, response(404, "User not found"))
 
     return (1, response(200))
 
@@ -85,6 +83,14 @@ def get_share_list(body):
 
 def delete_note(body):
     note_id = body["action"].split("/")[-1]
-    if note_model.delete_note(note_id, body["token"]["id"]):
-        return (1, response(200))
-    return (0, response(500))
+
+    if not note_model.belong_to(note_id, body["token"]["id"]):
+        return (0, response(401))
+
+    if not note_model.clear_shares(note_id):
+        return (0, response(500))
+
+    if not note_model.delete_note(note_id, body["token"]["id"]):
+        return (0, response(500))
+
+    return (1, response(200))
