@@ -23,6 +23,7 @@ def route(body):
     if re.match(r"^/api/note/get_share_token/\d+$", body["action"]):
         return note_controller.get_share_token(body)
 
-    print(body)
+    if re.match(r"^/api/note/get_share_list/\d+$", body["action"]):
+        return note_controller.get_share_list(body)
 
     return (0, response(503))

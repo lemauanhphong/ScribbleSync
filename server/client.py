@@ -26,7 +26,7 @@ pew("/api/auth/register", acc)
 
 token = pew("/api/auth/login", acc)["token"]
 
-pew('/api/template')
+pew("/api/template")
 
 note_id = pew("/api/note/new", {"name": "hehe", "content": "lmao"})["id"]
 pew("/api/note")
@@ -39,16 +39,21 @@ note_id = 47
 pew(f"/api/note/edit/{note_id}", {"name": "ohno", "content": "burh", "share_all": True})
 pew(f"/api/note/{note_id}")
 
-share_token = pew(f"/api/note/get_share_token/{note_id}")["share_token"]
-pew(f"/api/note/{share_token}")
+# share_token = pew(f"/api/note/get_share_token/{note_id}")["share_token"]
+# pew(f"/api/note/{share_token}")
 
-pew(f"/api/note/edit/{note_id}", {"name": "", "content": "", "share_all": False})
-pew(f"/api/note/{share_token}")
+# pew(f"/api/note/edit/{note_id}", {"name": "", "content": "", "share_all": False})
+# pew(f"/api/note/{share_token}")
 
 pew(f"/api/note/edit/{note_id}", {"share_add": "meomeo13"})
-pew(f"/api/note/edit/{note_id}", {"share_remove": "meomeo13"})
+pew(f"/api/note/edit/{note_id}", {"share_add": "bxZItX"})
+pew(f"/api/note/edit/{note_id}", {"share_add": "UZmEqg"})
+pew(f"/api/note/edit/{note_id}", {"share_add": "evsska"})
+# pew(f"/api/note/edit/{note_id}", {"share_remove": "meomeo13"})
 
 
-pew("/api/profile")
-pew("/api/profile/update", {"new_avatar": "bro"})
-pew("/api/profile")
+pew(f"/api/note/get_share_list/{note_id}")
+
+# pew("/api/profile")
+# pew("/api/profile/update", {"new_avatar": "bro"})
+# pew("/api/profile")
