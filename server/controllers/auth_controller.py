@@ -6,7 +6,7 @@ from models import auth_model
 
 
 def register(data):
-    if not key_helper(data, {"data": str, "password": str}):
+    if not key_helper.key_validator(data, {"username": str, "password": str}):
         return (0, response_helper.response(400))
     if len(data["password"]) < 8:
         return (0, response_helper.response(400, "Short password"))
@@ -26,7 +26,7 @@ def register(data):
 
 
 def login(data):
-    if not key_helper(data, {"data": str, "password": str}):
+    if not key_helper.key_validator(data, {"username": str, "password": str}):
         return (0, response_helper.response(400))
     res = auth_model.login(data["username"], data["password"])
     if res[0] == 0:
