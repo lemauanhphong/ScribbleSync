@@ -5,23 +5,24 @@ from helpers.response_helper import response
 
 
 def route(body):
-    action = body["action"]
-    token = body["token"]
-    data = body["data"]
+    if body["action"] == "/api/note":
+        return note_controller.get_note_ids(body)
 
-    if action == "/api/note/new":
-        return note_controller.new(data, token)
+    if body["action"] == "/api/note/new":
+        return note_controller.new_note(body)
 
-    if action == "/api/note":
-        return note_controller.get_list(token)
+    if re.match(r"^/api/note/[0-9a-z-]+$", body["action"]):
+        return note_controller.get_note(body)
 
-    if re.match(r"^/api/note/\d+$", action):
-        return note_controller.get(action)
+    if re.match(r"^/api/note/edit/\d+$", body["action"]):
+        return note_controller.update_note(body)
 
-    if re.match(r"^/api/note/edit/\d+$", action):
-        return note_controller.edit(action, data)
+    if re.match(r"^/api/note/delete/\d+$", body["action"]):
+        return note_controller.delete_note(body)
 
-    if re.match(r"^/api/note/delete/\d+$", action):
-        return note_controller.delete(action)
+    if re.match(r"^/api/note/get_share_token/\d+$", body["action"]):
+        return note_controller.get_share_token(body)
+
+    print(body)
 
     return (0, response(503))

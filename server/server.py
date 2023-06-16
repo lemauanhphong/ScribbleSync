@@ -3,7 +3,7 @@ import socket
 import threading
 from traceback import print_exception
 
-from api import auth_api, file_api, note_api, profile_api, template_api
+from api import auth_api, note_api, profile_api, template_api
 from helpers.response_helper import response
 from middlewares import jwt_middleware
 
@@ -14,7 +14,6 @@ api_routes = {
     "/api/template": template_api,
     "/api/note": note_api,
     "/api/profile": profile_api,
-    "/api/file": file_api,
 }
 
 
