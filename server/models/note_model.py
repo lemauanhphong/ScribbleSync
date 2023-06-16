@@ -6,7 +6,7 @@ def get_uid(username):
 
 
 def get_last_insert_id():
-    return db.query("SELECT LAST_INSERT_ID()")[0][0]
+    return db.query("SELECT LAST_INSERT_ID()")[0]["LAST_INSERT_ID()"]
 
 
 def get_note(note_id, uid):
@@ -28,7 +28,7 @@ def get_shared_note(share_token):
 
 def get_note_ids(uid):
     list_id = db.query("SELECT id FROM notes WHERE uid=?", (uid,))
-    return [x[0] for x in list_id]
+    return [x["id"] for x in list_id]
 
 
 def new_note(uid, name, content):
@@ -54,7 +54,7 @@ def delete_note(note_id, uid):
 
 
 def get_share_token(note_id, uid):
-    return db.query("SELECT share_token FROM notes WHERE id=? AND uid=? LIMIT 1", (note_id, uid))[0][0]
+    return db.query("SELECT share_token FROM notes WHERE id=? AND uid=? LIMIT 1", (note_id, uid))[0]["share_token"]
 
 
 def set_share_token(note_id, share_token, uid):

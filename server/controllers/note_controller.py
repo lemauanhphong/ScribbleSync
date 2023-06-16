@@ -24,7 +24,7 @@ def get_note_ids(body):
         share_token = note_model.get_share_token(note_id, uid)
         shares = note_model.get_shares(note_id, uid)
 
-        if share_token or shares[0][0]:
+        if share_token or shares[0]["uid"]:
             result["share"].append(note_id)
         else:
             result["priv"].append(note_id)
@@ -39,7 +39,7 @@ def get_note(body):
     else:
         note = note_model.get_note(note_id, body["token"]["id"])
     if note:
-        return (1, response(200, -1, {"name": note[0][0], "content": note[0][1]}))
+        return (1, response(200, -1, {"name": note[0]["name"], "content": note[0]["content"]}))
     return (0, response(404))
 
 
@@ -65,14 +65,14 @@ def update_note(body):
 
     if username := body["data"].get("share_add"):
         if uid := note_model.get_uid(username):
-            if not note_model.add_shares(note_id, uid[0][0]):
+            if not note_model.add_shares(note_id, uid[0]["id"]):
                 return (0, response(500))
         else:
             return (0, response("User not found", 404))
 
     if username := body["data"].get("share_remove"):
         if uid := note_model.get_uid(username):
-            if not note_model.remove_shares(note_id, uid[0][0]):
+            if not note_model.remove_shares(note_id, uid[0]["id"]):
                 return (0, response(500))
         else:
             return (0, response("User not found", 404))
