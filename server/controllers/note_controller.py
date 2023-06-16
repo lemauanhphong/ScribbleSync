@@ -18,7 +18,9 @@ def get_note_ids(body):
     uid = body["token"]["id"]
     return (
         1,
-        response(200, -1, {"id_list": {"share": note_model.get_shared_note_ids(uid), "priv": note_model.get_note_ids(uid)}}),
+        response(
+            200, -1, {"id_list": {"share": note_model.get_shared_note_ids(uid), "priv": note_model.get_note_ids(uid)}}
+        ),
     )
 
 
@@ -73,6 +75,13 @@ def update_note(body):
 def get_share_token(body):
     note_id = body["action"].split("/")[-1]
     return (1, response(200, -1, {"share_token": note_model.get_share_token(note_id, body["token"]["id"])}))
+
+
+def get_share_list(body):
+    note_id = body["action"].split("/")[-1]
+    if not note_model.belong_to(note_id, body["token"]["id"]):
+        return (0, response(401))
+    return (1, response(200, -1, {"share_list": note_model.get_share_list(note_id)}))
 
 
 def delete_note(body):

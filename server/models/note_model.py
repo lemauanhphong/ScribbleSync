@@ -61,6 +61,14 @@ def set_share_token(note_id, share_token, uid):
     return db.update("UPDATE notes SET share_token=? WHERE id=? AND uid=?", (share_token, note_id, uid))
 
 
+def get_share_list(note_id):
+    result = db.query(
+        "SELECT username FROM shares LEFT JOIN users ON shares.uid=users.id WHERE shares.id=?",
+        (note_id,),
+    )
+    return [x["username"] for x in result]
+
+
 def add_shares(note_id, uid):
     return db.update("INSERT INTO shares(id, uid) VALUES (?, ?)", (note_id, uid))
 
