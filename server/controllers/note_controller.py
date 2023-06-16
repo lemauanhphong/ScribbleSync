@@ -16,20 +16,10 @@ def new_note(body):
 
 def get_note_ids(body):
     uid = body["token"]["id"]
-
-    id_list = note_model.get_note_ids(uid)
-    result = {"share": [], "priv": []}
-
-    for note_id in id_list:
-        share_token = note_model.get_share_token(note_id, uid)
-        shares = note_model.get_shares(note_id, uid)
-
-        if share_token or shares[0]["uid"]:
-            result["share"].append(note_id)
-        else:
-            result["priv"].append(note_id)
-
-    return (1, response(200, -1, {"id_list": result}))
+    return (
+        1,
+        response(200, -1, {"id_list": {"share": note_model.get_shared_note_ids(uid), "priv": note_model.get_note_ids(uid)}}),
+    )
 
 
 def get_note(body):

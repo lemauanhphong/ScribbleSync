@@ -20,8 +20,8 @@ def pew(action, data={}):
 
 token = ""
 
-acc = {"username": "".join(random.choices(string.ascii_letters, k=6)), "password": "12345$%%^)(_)IIJMA"}
-# acc = {"username": "meomeo14", "password": "12345$%%^)(_)IIJMA"}
+# acc = {"username": "".join(random.choices(string.ascii_letters, k=6)), "password": "12345$%%^)(_)IIJMA"}
+acc = {"username": "meomeo14", "password": "12345$%%^)(_)IIJMA"}
 pew("/api/auth/register", acc)
 
 token = pew("/api/auth/login", acc)["token"]
@@ -34,7 +34,8 @@ pew(f"/api/note/{note_id}")
 pew(f"/api/note/delete/{note_id}")
 pew(f"/api/note/{note_id}")
 
-note_id = pew("/api/note/new", {"name": "hehe", "content": "lmao"})["id"]
+# pew("/api/note/new", {"name": "hehe", "content": "lmao"})["id"]
+note_id = 47
 pew(f"/api/note/edit/{note_id}", {"name": "ohno", "content": "burh", "share_all": True})
 pew(f"/api/note/{note_id}")
 

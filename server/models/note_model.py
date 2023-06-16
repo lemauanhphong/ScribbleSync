@@ -69,21 +69,13 @@ def remove_shares(note_id, uid):
     return db.update("DELETE FROM shares WHERE id=? AND uid=?", (note_id, uid))
 
 
-def get_shares(note_id, uid):
-    return db.query(
-        """
-        SELECT
-            b.uid
-        FROM
-            notes a LEFT JOIN shares b ON a.id=b.id
-        WHERE
-            a.id=? AND a.uid=?""",
-        (note_id, uid),
-    )
-
-
 def clear_shares(note_id):
     return db.update("DELETE FROM shares WHERE id=?", (note_id,))
+
+
+def get_shared_note_ids(uid):
+    ids = db.query("SELECT id FROM shares WHERE uid=?", (uid,))
+    return [x["id"] for x in ids]
 
 
 def belong_to(note_id, uid):
