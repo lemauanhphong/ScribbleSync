@@ -51,9 +51,8 @@ def update_note(body):
         if not note_model.update_note(note_id, uid, name, content):
             return (0, response(500))
 
-    if isinstance((share_all := body["data"].get("share_all")), bool):
-        note_model.clear_shares(note_id)
-        note_model.set_share_token(note_id, str(uuid.uuid4()) if share_all else None, uid)
+    if isinstance((share_token := body["data"].get("share_token")), bool):
+        note_model.set_share_token(note_id, str(uuid.uuid4()) if share_token else None, uid)
 
     if username := body["data"].get("share_add"):
         if uid := note_model.get_uid(username):
