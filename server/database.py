@@ -20,6 +20,9 @@ class Database:
                 host="127.0.0.1",
                 port=3306,
                 database="scribble_sync",
+                ssl_ca="key/server-ca.pem",
+                ssl_cert="key/client-cert.pem",
+                ssl_key="key/client-key.pem",
             )
             self.cursor = self.conn.cursor(dictionary=True)
         except mariadb.Error:
