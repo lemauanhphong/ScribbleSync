@@ -16,11 +16,11 @@ def get_avatar(body):
 def update_profile(body):
     new_avatar = body["data"].get("new_avatar")
     if new_avatar and len(new_avatar) / 1024**3 > 2.7:
-        return (0, response("The image size must be smaller than 2MB", 413))
+        return (0, response(413, "The image size must be smaller than 2MB"))
 
     new_password = body["data"].get("new_password")
     if new_password and len(new_password) < 8:
-        return (0, response("Short password", 400))
+        return (0, response(400, "Short password"))
 
     if profile_model.update_profile(body["token"]["id"], new_password, new_avatar):
         return (1, response(200))
