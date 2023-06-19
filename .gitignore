@@ -1,7 +1,8 @@
-jwtRS512.key
-jwtRS512.key.pub
 __pycache__
 pyproject.toml
 .project
 .vscode
+cert
 *.pem
+deploy
+*.zip

@@ -1,9 +1,7 @@
-import os
 import sys
 from traceback import print_exc
 
 import mariadb
-import sqlparse
 
 
 class Database:
@@ -17,11 +15,14 @@ class Database:
     def connect(self):
         try:
             self.conn = mariadb.connect(
-                user="root",
-                password="123456",
-                host="127.0.0.1",
+                user="test",
+                password="test",
+                host="34.67.59.220",
                 port=3306,
                 database="scribble_sync",
+                ssl_ca="key/server-ca.pem",
+                ssl_cert="key/client-cert.pem",
+                ssl_key="key/client-key.pem",
             )
             self.conn.autocommit = True
             self.cursor = self.conn.cursor(dictionary=True)
@@ -35,6 +36,17 @@ class Database:
                 self.cursor.execute(stmt, param)
             else:
                 self.cursor.execute(stmt)
+            return self.cursor.fetchall()
+        except Exception:
+            print_exc()
+            return []
+
+    def update(self, stmt, param=None):
+        try:
+            if param:
+                self.cursor.execute(stmt, param)
+            else:
+                self.cursor.execute(stmt)
             return True
         except Exception:
             self.conn.rollback()
@@ -42,14 +54,5 @@ class Database:
             return False
 
 
-if __name__ == "__main__":
-    db = Database()
-    db.connect()
-
-    with open("../database/schema.sql") as f:
-        for stmt in sqlparse.split(f.read()):
-            db.query(stmt)
-
-    for file_name in os.listdir("templates"):
-        with open("templates/" + file_name, "r") as f:
-            db.query("INSERT INTO templates(name, content) VALUES (?, ?)", (os.path.splitext(file_name)[0], f.read()))
+db = Database()
+db.connect()

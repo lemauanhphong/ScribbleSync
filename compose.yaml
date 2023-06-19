@@ -1,19 +1,28 @@
 services:
-  db:
-    image: mariadb
-    environment:
-      MARIADB_ROOT_PASSWORD: 123456
-      MARIADB_DATABSE: scribble_sync
+  load_balancer:
+    build: ./load_balancer
     ports:
-      - '3306:3306'
-    volumes:
-      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - "8028:8028"
+    depends_on:
+      - server_1
+      - server_2
     networks:
       static-network:
-        ipv4_address: 172.21.0.2
+        ipv4_address: 172.22.1.2
+
+  server_1:
+    build: ./deploy1/
+    networks:
+      static-network:
+        ipv4_address: 172.22.1.3
+  server_2:
+    build: ./deploy2/
+    networks:
+      static-network:
+        ipv4_address: 172.22.1.4
 
 networks:
   static-network:
     ipam:
       config:
-        - subnet: 172.21.0.0/16
+        - subnet: 172.22.1.0/16

@@ -40,14 +40,17 @@ def parse_route(data):
     data["token"] = token
     return api.route(data)
 
-
+import ssl
 class ThreadedServer:
     def __init__(self, host, port):
         self.host = host
         self.port = port
+        context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+        context.load_cert_chain(certfile='../cert/cloudsbshd.duckdns.org/certificate.crt', keyfile='../cert/cloudsbshd.duckdns.org/ec-private-key.pem')
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind((self.host, self.port))
+        self.sock = context.wrap_socket(self.sock, server_side=True) 
 
     def listen(self):
         self.sock.listen()
@@ -82,4 +85,8 @@ class ThreadedServer:
 
 if __name__ == "__main__":
     print(f"Server is running on port {PORT_NUM}")
-    ThreadedServer("", PORT_NUM).listen()
+    while True:
+        try:
+            ThreadedServer("", PORT_NUM).listen()
+        except:
+            pass
