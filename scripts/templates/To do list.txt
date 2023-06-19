@@ -1,0 +1,9 @@
+# To do list
+
+## 🐳 Most imporant
+- [x] ~~Sleep all day~~
+
+## :s Tomorrow
+- [ ] Do homework
+    - [x] ~~Operating System~~
+    - [ ] Network Programming

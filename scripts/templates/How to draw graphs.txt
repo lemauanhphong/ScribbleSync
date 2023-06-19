@@ -1,0 +1,76 @@
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+</script>
+
+# Use mermaid to draw graph
+
+## 1. Tree
+
+<pre class="mermaid">
+    graph TB
+    A((1))-->B((2))
+    A-->C((3))
+    A-->D((4))
+    B-->E((5))
+    B-->F((6))
+    B-->G((7))
+    C-->H((8))
+    D-->I((9))
+    D-->J((10))
+</pre>
+
+## 2. Analyze below pie chart and answer the questions:
+
+<pre class="mermaid">
+    pie title Pets adopted by volunteers
+    "Dogs" : 386
+    "Cats" : 85
+    "Rats" : 15
+</pre>
+
+## 3. Draw a Gantt chart
+
+<pre class="mermaid">
+    gantt
+    title A Gantt Diagram
+    dateFormat  YYYY-MM-DD
+    section Section
+    Process 1           :a1, 2014-01-01, 30d
+    Process 2     :after a1  , 20d
+    section Another
+    Process 4      :2014-01-12  , 12d
+    Process 3      : 24d
+
+</pre>
+
+## 4. Draw a git graph
+
+<pre class="mermaid">gitGraph
+       commit id: "1"
+       commit id: "2"
+       branch Nghia
+       checkout Nghia
+       commit id: "3"
+       checkout main
+       commit id: "4"
+       checkout Nghia
+       branch Phong
+       checkout Phong
+       commit id: "5"
+       checkout main
+       commit id: "6"
+       checkout Nghia
+       commit id: "7"
+       checkout main
+       merge Nghia id: "customID" tag: "customTag" type: REVERSE
+       checkout Phong
+       commit id: "8"
+       checkout main
+       commit id: "9"
+
+
+
+
+
+</pre>
+

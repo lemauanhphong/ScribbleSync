@@ -1,12 +1,12 @@
 import socket
 import threading
 from itertools import cycle
-
-from traceback import print_exception
+from traceback import print_exc
 
 PORT_NUM = 8028
-SERVER_POOL = [('127.0.0.1', 2808)]
+SERVER_POOL = [("127.0.0.1", 2808)]
 ITER = cycle(SERVER_POOL)
+
 
 class ThreadedServer(object):
     def __init__(self, host, port):
@@ -32,22 +32,34 @@ class ThreadedServer(object):
                 data += recv_data
                 if data[-1] == 10:
                     break
-            
+
             if data:
                 server = next(ITER)
+
                 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket_connection:
                     socket_connection.connect(server)
                     socket_connection.send(data)
-                    recv_data = socket_connection.recv(size)
 
-                client.send(recv_data)
+                    forwarded_data = b""
+                    while True:
+                        recv_data = socket_connection.recv(size)
+                        forwarded_data += recv_data
+                        if forwarded_data[-1] == 10:
+                            break
+
+                client.send(forwarded_data)
             else:
                 raise Exception("Client disconnected")
-        except Exception as e:
-            print_exception(e)
+        except Exception:
+            print_exc()
         finally:
             client.close()
 
+
 if __name__ == "__main__":
     print(f"Server is running on port {PORT_NUM}")
-    ThreadedServer("", PORT_NUM).listen()
+    while True:
+        try:
+            ThreadedServer("", PORT_NUM).listen()
+        except:
+            pass

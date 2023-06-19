@@ -17,19 +17,18 @@ class Database:
             self.conn = mariadb.connect(
                 user="root",
                 password="123456",
-                host="34.67.59.220",
+                host="127.0.0.1",
                 port=3306,
                 database="scribble_sync",
-                ssl_ca="key/server-ca.pem",
-                ssl_cert="key/client-cert.pem",
-                ssl_key="key/client-key.pem",
             )
             self.cursor = self.conn.cursor(dictionary=True)
+            self.conn.autocommit = True
         except mariadb.Error:
             print_exc()
             sys.exit(1)
 
     def query(self, stmt, param=None):
+        print(stmt, param)
         try:
             if param:
                 self.cursor.execute(stmt, param)
@@ -41,12 +40,12 @@ class Database:
             return []
 
     def update(self, stmt, param=None):
+        print(stmt, param)
         try:
             if param:
                 self.cursor.execute(stmt, param)
             else:
                 self.cursor.execute(stmt)
-            self.conn.commit()
             return True
         except Exception:
             self.conn.rollback()
