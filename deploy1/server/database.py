@@ -24,6 +24,7 @@ class Database:
                 ssl_cert="key/client-cert.pem",
                 ssl_key="key/client-key.pem",
             )
+            self.conn.autocommit = True
             self.cursor = self.conn.cursor(dictionary=True)
         except mariadb.Error:
             print_exc()
@@ -31,7 +32,6 @@ class Database:
 
     def query(self, stmt, param=None):
         try:
-            self.conn.commit()
             if param:
                 self.cursor.execute(stmt, param)
             else:
@@ -43,12 +43,10 @@ class Database:
 
     def update(self, stmt, param=None):
         try:
-            self.conn.commit()
             if param:
                 self.cursor.execute(stmt, param)
             else:
                 self.cursor.execute(stmt)
-            self.conn.commit()
             return True
         except Exception:
             self.conn.rollback()
