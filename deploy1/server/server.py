@@ -85,4 +85,9 @@ class ThreadedServer:
 
 if __name__ == "__main__":
     print(f"Server is running on port {PORT_NUM}")
-    ThreadedServer("", PORT_NUM).listen()
+    while True:
+        try:
+            ThreadedServer("", PORT_NUM).listen()
+        except:
+            pass
+

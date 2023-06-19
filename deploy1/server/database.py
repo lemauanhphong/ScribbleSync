@@ -31,6 +31,7 @@ class Database:
 
     def query(self, stmt, param=None):
         try:
+            self.conn.commit()
             if param:
                 self.cursor.execute(stmt, param)
             else:
@@ -42,6 +43,7 @@ class Database:
 
     def update(self, stmt, param=None):
         try:
+            self.conn.commit()
             if param:
                 self.cursor.execute(stmt, param)
             else:

@@ -46,7 +46,7 @@ class ThreadedServer:
         self.host = host
         self.port = port
         context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-        context.load_cert_chain(certfile='../cert/cloudsashd.duckdns.org/certificate.crt', keyfile='../cert/cloudsashd.duckdns.org/ec-private-key.pem')
+        context.load_cert_chain(certfile='../cert/cloudsbshd.duckdns.org/certificate.crt', keyfile='../cert/cloudsbshd.duckdns.org/ec-private-key.pem')
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind((self.host, self.port))
@@ -85,4 +85,8 @@ class ThreadedServer:
 
 if __name__ == "__main__":
     print(f"Server is running on port {PORT_NUM}")
-    ThreadedServer("", PORT_NUM).listen()
+    while True:
+        try:
+            ThreadedServer("", PORT_NUM).listen()
+        except:
+            pass
