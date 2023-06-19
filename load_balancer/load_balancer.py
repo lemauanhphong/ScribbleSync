@@ -5,7 +5,7 @@ from itertools import cycle
 from traceback import print_exc
 
 PORT_NUM = 8028
-SERVER_POOL = [("cloudsashd.duckdns.org", 2808), ("cloudsbshd.duckdns.org", 2808)]
+SERVER_POOL = [("cloudsashd.duckdns.org", 2808), ("cloudsbshd.duckdns.org", 2809)]
 ITER = cycle(SERVER_POOL)
 
 
