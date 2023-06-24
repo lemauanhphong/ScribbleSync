@@ -1,0 +1,9 @@
+<style>
+  .highlight pre { /* Apply styles to the pre tag within the .highlight class */
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+</style>
